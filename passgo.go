@@ -94,10 +94,10 @@ func main() {
 		path := strings.Join(addArgList, " ")
 		show.Find(path)
 	case "generate":
-		pwlenStr := os.Args[2]
-		pwlen, err := strconv.Atoi(pwlenStr)
-		if err != nil {
-			pwlen = -1
+		pwlen := -1
+		if len(os.Args) > 2 {
+			pwlenStr := os.Args[2]
+			pwlen, _ = strconv.Atoi(pwlenStr)
 		}
 		pass := generate.Generate(pwlen)
 		fmt.Println(pass)
@@ -132,11 +132,21 @@ func main() {
 	case "push":
 		sync.Push()
 	case "remote":
-		remote := os.Args[2]
-		sync.Remote(remote)
+		if len(os.Args) > 2 {
+			remote := os.Args[2]
+			sync.Remote(remote)
+		} else {
+			fmt.Println("No remote given")
+			fmt.Println(usage)
+		}
 	case "clone":
-		repo := os.Args[2]
-		sync.Clone(repo)
+		if len(os.Args) > 2 {
+			repo := os.Args[2]
+			sync.Clone(repo)
+		} else {
+			fmt.Println("No repository given")
+			fmt.Println(usage)
+		}
 	default:
 		addArgList := os.Args[1:]
 		path := strings.Join(addArgList, " ")
